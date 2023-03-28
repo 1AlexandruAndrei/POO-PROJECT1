@@ -53,6 +53,7 @@ public:
 
     ///getter
     float getProfit();
+    float getDatorii();
     ///setteri
     void setAnRaport(int anRaport);
     void setProfit(float profit);
@@ -71,9 +72,15 @@ void Financiar::setDatorii(float datorii)
     this->datorii=datorii;
 }
 
+///getteri
 float Financiar::getProfit()
 {
     return profit;
+}
+
+float Financiar::getDatorii()
+{
+    return datorii;
 }
 
 ///operator ++
@@ -1030,7 +1037,7 @@ private:
     string proprietar;
     float valoare;
 
-    int *NrRezidenti;///list <int>MemorieRAM; STL
+    int *NrRezidenti;
     int nrCamere;
 
     bool soldOut;
@@ -1053,7 +1060,6 @@ public:
     Residence &operator =(const Residence &obj);
     friend ostream& operator << (ostream& out, const Residence &r1);
     friend istream& operator >> (istream& in, Residence &r1);
-    \
 
     Residence operator++();///++a
     Residence operator++(int);///a+++
@@ -1436,14 +1442,14 @@ int Residence::operator[](int a)
 
 }
 
-///operator ++
+///operator ++a
 Residence Residence::operator++()
 {
     this->valoare++;
     return *this;
 }
 
-///operator ++
+///operator a++
 Residence Residence::operator++(int)
 {
     Residence aux(*this);///obiectul de la adresa this
@@ -1521,9 +1527,10 @@ Residence::operator int() const
 
 }
 
+///updatez pretul Residence in functie de datele financiare din acel an
 void Residence::adaug(Residence& objResidence, Financiar& objFinanciar)
 {
-    objResidence.setValoare(objResidence.getValoare() + objFinanciar.getProfit());
+    objResidence.setValoare(objResidence.getValoare() + objFinanciar.getProfit() - objFinanciar.getDatorii());
 }
 
 ///destructor
@@ -1559,7 +1566,8 @@ int main()
     Chirias listaChiriasi[1000];
     Financiar listaFinanciar[1000];
 
-    /*Residence R1, R2;
+    /*
+    Residence R1, R2;
     Chirias C;
     Apartament A;
     Financiar F;
@@ -1583,7 +1591,8 @@ int main()
     R1.citire();
     //R2.citire();
     //cout<<endl;
-    //R1.afisare();
+    R1.afisare();
+    cout<<endl;
     cout<<R1<<endl;
     //cout<<R1+2;
     //R2.afisare();
@@ -1592,7 +1601,7 @@ int main()
     //cout<<endl;
     //R.tipResidence();
     //cout<<endl;
-                        ///R1.adaug(R1,C3);
+
     //cout<<endl<<R1;
     //cout<<endl<<C3;
 
@@ -1607,11 +1616,14 @@ int main()
 
     F.citire();
     cout<<endl;
-    //F.afisare();
-    cout<<endl;
+    F.afisare();
+    //cout<<endl;
     //F.analiza();
     R1.adaug(R1,F);
     cout<<R1<<endl;
+    //++R1;
+    //cout<<R1;
+    //R1.tipResidence();
     */
 
 
@@ -1634,8 +1646,8 @@ int main()
         cout<<"\n10-Afla Tipul De Apartament"<<endl;
 
 
-        cout<<"\n11-Citeste Obiect Chiriasi";
-        cout<<"\n12-Afiseaza Lista Obiecte Chiriasi";
+        cout<<"\n11-Citeste Obiect Chirias";
+        cout<<"\n12-Afiseaza Lista Obiecte Chirias";
         cout<<"\n13-Updateaza Un Obiect Chiriasi";
         cout<<"\n14-Sterge Un Obiect Chirias";
         cout<<"\n15-Afla Etajul Unde Sta Un Chirias"<<endl;
@@ -1645,7 +1657,9 @@ int main()
         cout<<"\n18-Updateaza Un Obiect Financiar";
         cout<<"\n19-Sterge Un Obiect Financiar";
         cout<<"\n20-Analiza Financiara A Unei Companii"<<endl;
-        cout<<"\n21-STOP"<<endl;
+
+        cout<<"\n22-Adauga Date Financiare La Obiectul Din Clasa Residence"<<endl;
+        cout<<"\n23-STOP"<<endl;
         cout<<"----------------------------------------------------"<<endl;
 
 
@@ -1930,7 +1944,20 @@ int main()
             break;
         }
 
-        case 21:
+        case 22:
+        {
+            int i,j;
+            cout<<"INTRODU ID RESIDENCE PE CARE VREI SA O UPDATEZI:";
+            cin>>i;
+            cout<<endl<<"INTRODU ID FINANCIAR PE CARE VREI SA O UTILIZEZI:";
+            cin>>j;
+            listaResidence[i].adaug(listaResidence[i],listaFinanciar[j]);
+            break;
+
+
+        }
+
+        case 23:
         {
 
             k=0;
